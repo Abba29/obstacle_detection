@@ -31,7 +31,7 @@ public:
     int pointsCount; // # of adjacent points
     int cluster; // # of cluster
 
-    // CONSTRUCTORS
+    // CONSTRUCTOR
     PointDB(size_t objClass, float conf, int frameN, int x,int y) {
         this->frameNumber = frameN;
         this->objectClass = objClass;
@@ -312,7 +312,7 @@ int main() {
         rectangle(frame, proximityZone, Scalar(0,0,200), 2);
         rectangle(frame, movementZone,  Scalar(0,0,200), 2);
 
-        if(frameNum < 10) { // Before frame #10 print out bBoxes as they are
+        if(frameNum < windowSize) { // Before the 'windowSize'-th frame print out bBoxes as they are
             for(int i = 0; i < leftBottomPoints.size(); i++) {
                 if(leftBottomPoints[i].frameNumber == frameNum) {
                     Rect object(leftBottomPoints[i].x, leftBottomPoints[i].y,
@@ -392,9 +392,12 @@ int main() {
                             break;
                     }
 
+                    if(index == -1)
+                        continue;
+
                     int minSize = std::min(leftBottomCluster[i].size(), rightTopCluster[index].size());
 
-                    if(minSize > 4 && index > -1) {
+                    if(minSize > 4) {
 
                         if(minSize == 5)
                             alpha = alpha5;
@@ -494,9 +497,12 @@ int main() {
                             break;
                     }
 
+                    if(index == -1)
+                        continue;
+
                     int minSize = std::min(leftBottomCluster[index].size(), rightTopCluster[i].size());
 
-                    if(minSize > 4 && index > -1) {
+                    if(minSize > 4) {
 
                         if(minSize == 5)
                             alpha = alpha5;
